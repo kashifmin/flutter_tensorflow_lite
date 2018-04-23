@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tensorflow_lite/tensorflow_lite.dart';
+import 'package:tensorflow_lite_example/tflite_image_classifier.dart';
 
 void main() => runApp(new MyApp());
 
@@ -21,12 +21,18 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<Null> testStuff() async {
-    var interpreter = await Interpreter.createInstance(modelFilePath: "assets/mobilenet_v1_0.50_224.tflite");
-    var inputBytes = new Uint8List(224 * 224);
-    var outputBytes = new Uint8List(10);
-    print("calling run...");
-    interpreter.run(inputBytes, outputBytes);
-    return null;
+//    var interpreter = await Interpreter.createInstance(modelFilePath: "assets/mobilenet_v1_0.50_224.tflite");
+//    var inputBytes = new Uint8List(224 * 224);
+//    var outputBytes = new Uint8List(10);
+//    print("calling run...");
+//    interpreter.run(inputBytes, outputBytes);
+//    return null;
+    await TFLiteImageClassifier.createInstance(assets: rootBundle,
+      modelPath: "assets/mobilenet_v1_0.50_224.tflite",
+      labelPath: "assets/labels.txt",
+      inputSize: 224,
+    );
+    print('Classifier ready');
   }
 
   @override

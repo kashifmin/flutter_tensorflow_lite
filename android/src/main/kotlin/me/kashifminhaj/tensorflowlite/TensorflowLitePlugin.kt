@@ -58,6 +58,7 @@ class TensorflowLitePlugin(): MethodCallHandler {
     interpreter = Interpreter(loadModelFile(assetManager!!, assetkey!!))
     Log.d(TAG, "Interpreter instance ready")
     result.success("Interpreter instance ready")
+    Log.d(TAG, "Result success")
   }
 
   fun runInterpreter(args: Any, result: Result) {
