@@ -1,12 +1,13 @@
 name: tensorflow_lite
 description: A Flutter plugin to access TensorFlow Lite apis.
 version: 0.0.1
-author:
-homepage:
+author: Kashif Minhaj <dailypctips@gmail.com>
+homepage: http://github.com/kashifmin/flutter_tensorflow_lite
 
 dependencies:
   flutter:
     sdk: flutter
+  meta: ^1.1.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -16,6 +17,9 @@ flutter:
   plugin:
     androidPackage: me.kashifminhaj.tensorflowlite
     pluginClass: TensorflowLitePlugin
+
+environment:
+  sdk: ">=1.8.0 <2.0.0"
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

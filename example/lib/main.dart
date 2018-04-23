@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tensorflow_lite_example/tflite_image_classifier.dart';
 import 'package:image/image.dart' as img;
+
+import 'tflite_image_classifier.dart';
 
 void main() => runApp(new MyApp());
 
