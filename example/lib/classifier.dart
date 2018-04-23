@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:image/image.dart';
 
 abstract class Classifier {
-//  List<Recognition> recognizeImage(Image image);
+  Future<List<Recognition>> recognizeImage(Image image);
   void close();
 }
 

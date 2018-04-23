@@ -30,8 +30,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/mobilenet_v1_0.50_224.tflite
+    - assets/mobilenet_quant_v1_224.tflite
     - assets/labels.txt
+    - assets/cat500.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

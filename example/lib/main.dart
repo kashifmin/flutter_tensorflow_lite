@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tensorflow_lite_example/tflite_image_classifier.dart';
+import 'package:image/image.dart' as img;
 
 void main() => runApp(new MyApp());
 
@@ -27,12 +28,15 @@ class _MyAppState extends State<MyApp> {
 //    print("calling run...");
 //    interpreter.run(inputBytes, outputBytes);
 //    return null;
-    await TFLiteImageClassifier.createInstance(assets: rootBundle,
-      modelPath: "assets/mobilenet_v1_0.50_224.tflite",
+    var classifier = await TFLiteImageClassifier.createInstance(assets: rootBundle,
+      modelPath: "assets/mobilenet_quant_v1_224.tflite",
       labelPath: "assets/labels.txt",
       inputSize: 224,
     );
     print('Classifier ready');
+    var imageBytes = (await rootBundle.load("assets/cat500.png")).buffer;
+    img.Image image = img.decodePng(imageBytes.asUint8List());
+    classifier.recognizeImage(image);
   }
 
   @override

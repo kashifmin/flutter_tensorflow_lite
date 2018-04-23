@@ -12,6 +12,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 
@@ -64,12 +65,17 @@ class TensorflowLitePlugin(): MethodCallHandler {
   fun runInterpreter(args: Any, result: Result) {
     val argList = args as List<Any>
     val inputBytes = args[0] as ByteArray
-    val outputBytes = args[0] as ByteArray
-    MappedByteBuffer.wrap(inputBytes)
-    MappedByteBuffer.wrap(outputBytes)
+    val outputBytes = args[1] as ByteArray
 
+//    val inputBuffer = ByteBuffer.wrap(inputBytes)
+//    val outputBuffer = ByteBuffer.wrap(outputBytes)
+//
+    val inputBuffer = ByteBuffer.allocateDirect(inputBytes.size).put(inputBytes)
+
+    inputBuffer.order(ByteOrder.nativeOrder())
+    Log.d(TAG, "isDirect: ${inputBuffer.isDirect()}")
     Log.d(TAG, "Bytes are ready")
-    interpreter?.run(inputBytes, outputBytes)
+    interpreter?.run(inputBuffer, arrayOf(outputBytes))
     Log.d(TAG, "inference ran")
   }
 
