@@ -36,6 +36,7 @@ class _MyAppState extends State<MyApp> {
     print('Classifier ready');
     var imageBytes = (await rootBundle.load("assets/cat500.png")).buffer;
     img.Image image = img.decodePng(imageBytes.asUint8List());
+    image = img.copyResize(image, 224, 224);
     classifier.recognizeImage(image);
   }
 

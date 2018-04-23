@@ -77,6 +77,7 @@ class TensorflowLitePlugin(): MethodCallHandler {
     Log.d(TAG, "Bytes are ready")
     interpreter?.run(inputBuffer, arrayOf(outputBytes))
     Log.d(TAG, "inference ran")
+    result.success(outputBytes)
   }
 
   @Throws(IOException::class)
