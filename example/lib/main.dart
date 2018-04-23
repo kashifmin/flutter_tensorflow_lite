@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +21,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<Null> testStuff() async {
-    Interpreter.createInstance(modelFilePath: "assets/mobilenet_v1_0.50_224.tflite");
+    var interpreter = await Interpreter.createInstance(modelFilePath: "assets/mobilenet_v1_0.50_224.tflite");
+    var inputBytes = new Uint8List(224 * 224);
+    var outputBytes = new Uint8List(10);
+    print("calling run...");
+    interpreter.run(inputBytes, outputBytes);
     return null;
   }
 

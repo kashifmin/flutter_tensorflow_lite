@@ -11,6 +11,7 @@ import org.tensorflow.lite.Interpreter
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import java.nio.ByteBuffer
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 
@@ -24,6 +25,8 @@ class TensorflowLitePlugin(): MethodCallHandler {
     val TAG = "TensorflowLitePlugin"
     var assetManager: AssetManager? = null
     var registrar: Registrar? = null
+
+    var interpreter: Interpreter? = null
     @JvmStatic
     fun registerWith(reg: Registrar): Unit {
       val channel = MethodChannel(reg.messenger(), "tensorflow_lite")
@@ -37,22 +40,36 @@ class TensorflowLitePlugin(): MethodCallHandler {
     Log.d(TAG, "called : ${call.method.toString()}")
     when(call.method) {
       "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
-      "createTFLiteInstance" -> createTFLiteInstance(call.arguments)
-      "createInterpreterInstance" -> createInterpreterInstance(call.arguments)
+      "createTFLiteInstance" -> createTFLiteInstance(call.arguments, result)
+      "createInterpreterInstance" -> createInterpreterInstance(call.arguments, result)
+      "Interpreter.run" -> runInterpreter(call.arguments, result)
       else -> result.notImplemented()
     }
   }
 
-  fun createTFLiteInstance(args: Any) {
+  fun createTFLiteInstance(args: Any, result: Result) {
     Log.d(TAG, "createTFLiteInstance called with args ${args.toString()}")
   }
 
-  fun createInterpreterInstance(args: Any) {
+  fun createInterpreterInstance(args: Any, result: Result) {
     val modelAssetFile: String = (args as List<Any>)[0].toString()
     val assetkey = registrar?.lookupKeyForAsset(modelAssetFile)
     Log.d(TAG, "Asset key is $assetkey")
-    loadModelFile(assetManager!!, assetkey!!)
+    interpreter = Interpreter(loadModelFile(assetManager!!, assetkey!!))
     Log.d(TAG, "Interpreter instance ready")
+    result.success("Interpreter instance ready")
+  }
+
+  fun runInterpreter(args: Any, result: Result) {
+    val argList = args as List<Any>
+    val inputBytes = args[0] as ByteArray
+    val outputBytes = args[0] as ByteArray
+    MappedByteBuffer.wrap(inputBytes)
+    MappedByteBuffer.wrap(outputBytes)
+
+    Log.d(TAG, "Bytes are ready")
+    interpreter?.run(inputBytes, outputBytes)
+    Log.d(TAG, "inference ran")
   }
 
   @Throws(IOException::class)

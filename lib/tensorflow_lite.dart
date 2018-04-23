@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
@@ -26,8 +27,8 @@ class Interpreter {
     return new Interpreter.internal();
   }
 
-  Future<List<ByteData>> run(ByteData inputBytes) async {
-    await _channel.invokeMethod("Interpreter.run", [inputBytes]);
+  Future<List<ByteData>> run(Uint8List inputBytes, Uint8List outputBytes) async {
+    await _channel.invokeMethod("Interpreter.run", [inputBytes, outputBytes]);
     return null;
   }
 }
