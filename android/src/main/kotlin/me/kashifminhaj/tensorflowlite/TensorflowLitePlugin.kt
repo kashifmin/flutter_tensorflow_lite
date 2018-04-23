@@ -44,6 +44,7 @@ class TensorflowLitePlugin(): MethodCallHandler {
       "createTFLiteInstance" -> createTFLiteInstance(call.arguments, result)
       "createInterpreterInstance" -> createInterpreterInstance(call.arguments, result)
       "Interpreter.run" -> runInterpreter(call.arguments, result)
+      "Interpreter.close" -> closeInterpreter(result)
       else -> result.notImplemented()
     }
   }
@@ -67,17 +68,17 @@ class TensorflowLitePlugin(): MethodCallHandler {
     val inputBytes = args[0] as ByteArray
     val outputBytes = args[1] as ByteArray
 
-//    val inputBuffer = ByteBuffer.wrap(inputBytes)
-//    val outputBuffer = ByteBuffer.wrap(outputBytes)
-//
     val inputBuffer = ByteBuffer.allocateDirect(inputBytes.size).put(inputBytes)
-
     inputBuffer.order(ByteOrder.nativeOrder())
-    Log.d(TAG, "isDirect: ${inputBuffer.isDirect()}")
-    Log.d(TAG, "Bytes are ready")
     interpreter?.run(inputBuffer, arrayOf(outputBytes))
     Log.d(TAG, "inference ran")
     result.success(outputBytes)
+  }
+
+  fun closeInterpreter(result: Result) {
+    interpreter?.close()
+    interpreter = null
+    result.success("Interpreter session closed.")
   }
 
   @Throws(IOException::class)

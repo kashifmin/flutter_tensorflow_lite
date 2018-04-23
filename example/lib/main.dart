@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,12 +21,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<Null> testStuff() async {
-//    var interpreter = await Interpreter.createInstance(modelFilePath: "assets/mobilenet_v1_0.50_224.tflite");
-//    var inputBytes = new Uint8List(224 * 224);
-//    var outputBytes = new Uint8List(10);
-//    print("calling run...");
-//    interpreter.run(inputBytes, outputBytes);
-//    return null;
     var classifier = await TFLiteImageClassifier.createInstance(assets: rootBundle,
       modelPath: "assets/mobilenet_quant_v1_224.tflite",
       labelPath: "assets/labels.txt",
@@ -38,6 +31,7 @@ class _MyAppState extends State<MyApp> {
     img.Image image = img.decodePng(imageBytes.asUint8List());
     image = img.copyResize(image, 224, 224);
     classifier.recognizeImage(image);
+    classifier.close();
   }
 
   @override

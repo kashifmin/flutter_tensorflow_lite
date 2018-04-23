@@ -39,6 +39,8 @@ class TFLiteImageClassifier extends Classifier {
   @override
   void close() {
     // TODO: implement close
+    _interpreter.close();
+    _interpreter = null;
   }
 
   @override

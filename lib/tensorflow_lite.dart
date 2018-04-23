@@ -31,4 +31,8 @@ class Interpreter {
     return _channel.invokeMethod("Interpreter.run", [inputBytes, outputBytes]);
 
   }
+
+  Future<Null> close() {
+    return _channel.invokeMethod("Interpreter.close");
+  }
 }
