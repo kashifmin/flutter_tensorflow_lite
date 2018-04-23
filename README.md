@@ -9,21 +9,28 @@ Add `tensorflow_lite` to your [pubspec.yaml](https://flutter.io/platform-plugins
 Copy your models to an asset dir like `assets/mobilenet_quant_v1_224.tflite`
 And add it to your pubspec.yaml
 
-`  assets:
+```yaml
+   assets:
      - assets/mobilenet_quant_v1_224.tflite
-`
+```
 
 Import tensorflow_lite in your app
 
-`import 'package:tensorflow_lite/tensorflow_lite.dart';`
+```dart
+import 'package:tensorflow_lite/tensorflow_lite.dart';
+```
 
 Create a new Interpreter instance based on your tflite model file
 
-`Interpreter model = await Interpreter.createInstance(modelFilePath: modelPath);`
+```dart
+Interpreter model = await Interpreter.createInstance(modelFilePath: modelPath);
+```
 
 Pass some bytes to the model to get the output
 
-`dynamic result = await _interpreter.run(imageToByteList(image), new Uint8List(_labelList.length));`
+```dart
+dynamic result = await _interpreter.run(imageToByteList(image), new Uint8List(_labelList.length));
+```
 
 
 Please check the example for full usage.
