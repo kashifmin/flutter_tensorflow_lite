@@ -51,9 +51,9 @@ class TFLiteImageClassifier extends Classifier {
       var confidence = (i & 0xff) / 255.0;
       print("Output test $confidence");
     }
-    var outs = processOutputs(output);
-    print(outs.toString());
-    return null;
+    var recognitions = processOutputs(output);
+    print(recognitions.toString());
+    return recognitions;
   }
 
   Uint8List imageToByteList(Image image) {
@@ -80,6 +80,7 @@ class TFLiteImageClassifier extends Classifier {
     for (int i = 0; i < output.length; i++) {
       var confidence = (output[i] & 0xff) / 255.0;
       if (confidence >= thresholdConfidence) {
+        confidence = double.parse((confidence * 100.0).toStringAsFixed(2));
         pq.add(new Recognition(i.toString(), _labelList[i], confidence));
       }
     }
