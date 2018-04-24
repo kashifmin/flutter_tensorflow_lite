@@ -1,9 +1,8 @@
-import 'dart:async';
-
-import 'package:image/image.dart';
+part of tensorflow_lite;
 
 abstract class Classifier {
   Future<List<Recognition>> recognizeImage(Image image);
+
   void close();
 }
 

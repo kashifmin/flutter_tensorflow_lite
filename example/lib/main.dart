@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 
-import 'tflite_image_classifier.dart';
+import 'package:tensorflow_lite/tensorflow_lite.dart';
 
 void main() => runApp(new MyApp());
 
@@ -22,7 +22,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<Null> testStuff() async {
-    var classifier = await TFLiteImageClassifier.createInstance(assets: rootBundle,
+    var classifier = await TFLiteImageClassifier.createInstance(
+      assets: rootBundle,
       modelPath: "assets/mobilenet_quant_v1_224.tflite",
       labelPath: "assets/labels.txt",
       inputSize: 224,
@@ -31,8 +32,8 @@ class _MyAppState extends State<MyApp> {
     var imageBytes = (await rootBundle.load("assets/cat500.png")).buffer;
     img.Image image = img.decodePng(imageBytes.asUint8List());
     image = img.copyResize(image, 224, 224);
-    classifier.recognizeImage(image);
-    classifier.close();
+    await classifier.recognizeImage(image);
+    await classifier.close();
   }
 
   @override
