@@ -1,5 +1,8 @@
 # tensorflow_lite
 
+[![pub package](https://img.shields.io/pub/v/tensorflow_lite.svg)](https://pub.dartlang.org/packages/tensorflow_lite)
+
+
 A Flutter plugin to access TensorFlow Lite apis.
 [TensorFlow Lite](https://www.tensorflow.org/mobile/tflite/) is TensorFlow’s lightweight solution for mobile and embedded devices.
 
