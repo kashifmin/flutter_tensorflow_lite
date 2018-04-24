@@ -5,6 +5,7 @@
 
 A Flutter plugin to access TensorFlow Lite apis.
 [TensorFlow Lite](https://www.tensorflow.org/mobile/tflite/) is TensorFlow’s lightweight solution for mobile and embedded devices.
+With TensorFlow Lite you can deploy machine learning models on phones in your Android/iOS app.
 
 ## Usage
 Add `tensorflow_lite` to your [pubspec.yaml](https://flutter.io/platform-plugins/)
@@ -35,6 +36,29 @@ Pass some bytes to the model to get the output
 dynamic result = await _interpreter.run(imageToByteList(image), new Uint8List(_labelList.length));
 ```
 
+# Image Classification example
+
+`tensorflow_lite` also includes a wrapper for image classification models which can be easily loaded
+without much of boilerplate code.
+
+```dart
+Future<Null> loadRecognitions() async {
+    var classifier = await TFLiteImageClassifier.createInstance(
+      assets: rootBundle,
+      modelPath: "assets/mobilenet_quant_v1_224.tflite",
+      labelPath: "assets/labels.txt",
+      inputSize: 224,
+    );
+    print('Classifier ready');
+    var imageBytes = (await rootBundle.load("assets/cat500.png")).buffer;
+    img.Image image = img.decodePng(imageBytes.asUint8List());
+    image = img.copyResize(image, 224, 224);
+    _recognitions = await classifier.recognizeImage(image);
+    setState(() {});
+
+    await classifier.close();
+  }
+```
 
 Please check the example for full usage.
 
