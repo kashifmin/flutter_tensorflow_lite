@@ -1,15 +1,22 @@
-part of tensorflow_lite;
+import 'dart:async';
+import 'dart:typed_data';
+
+import 'package:flutter/services.dart';
+import 'package:meta/meta.dart';
+import 'package:collection/collection.dart';
+import 'package:image/image.dart';
+import './interpreter.dart';
+import './classifier.dart';
 
 class TFLiteImageClassifier extends Classifier {
-
   static double thresholdConfidence = 0.3;
 
   int _inputSize;
   Interpreter _interpreter;
   List<String> _labelList;
 
-  TFLiteImageClassifier.internal(this._inputSize, this._interpreter,
-      this._labelList);
+  TFLiteImageClassifier.internal(
+      this._inputSize, this._interpreter, this._labelList);
 
   static Future<TFLiteImageClassifier> createInstance({
     @required AssetBundle assets,
@@ -17,15 +24,15 @@ class TFLiteImageClassifier extends Classifier {
     @required String labelPath,
     @required int inputSize,
   }) async {
-    Interpreter interpreter = await Interpreter.createInstance(
-        modelFilePath: modelPath);
+    Interpreter interpreter =
+        await Interpreter.createInstance(modelFilePath: modelPath);
     List<String> labels = await _loadLabels(assets, labelPath);
     print("Labels length: ${labels.length}");
     return new TFLiteImageClassifier.internal(inputSize, interpreter, labels);
   }
 
-  static Future<List<String>> _loadLabels(AssetBundle assets,
-      String labelPath) async {
+  static Future<List<String>> _loadLabels(
+      AssetBundle assets, String labelPath) async {
     String labels = await assets.loadString(labelPath);
 
     return labels.trim().split("\n");
@@ -72,8 +79,8 @@ class TFLiteImageClassifier extends Classifier {
   }
 
   List<Recognition> processOutputs(Uint8List output) {
-    PriorityQueue<Recognition> pq = new PriorityQueue((Recognition r1,
-        Recognition r2) {
+    PriorityQueue<Recognition> pq =
+        new PriorityQueue((Recognition r1, Recognition r2) {
       return r1.confidence.compareTo(r2.confidence);
     });
 

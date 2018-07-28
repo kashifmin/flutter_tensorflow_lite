@@ -1,4 +1,6 @@
-part of tensorflow_lite;
+import 'dart:async';
+
+import 'package:image/image.dart';
 
 abstract class Classifier {
   Future<List<Recognition>> recognizeImage(Image image);
@@ -23,6 +25,4 @@ class Recognition {
   String toString() {
     return 'Recognition{_id: $_id, _title: $_title, _confidence: $_confidence}';
   }
-
-
 }
